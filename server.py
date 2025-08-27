@@ -1,15 +1,35 @@
-from flask import Flask, request, render_template, jsonify
+"""
+Flask web server for EmotionDetection application.
+Provides endpoints for emotion analysis of input text.
+"""
+
+from flask import Flask, request, render_template
 from EmotionDetection import emotion_detector
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def index():
-    # Loads the provided index.html from templates/
+    """
+    Render the main index page.
+
+    Returns:
+        str: Rendered HTML page.
+    """
     return render_template("index.html")
+
 
 @app.route("/emotionDetector", methods=["GET", "POST"])
 def detect_emotion():
+    """
+    Process user input and return detected emotions.
+    Handles both GET and POST requests.
+    Returns a formatted response or error message for blank input.
+
+    Returns:
+        str: Formatted emotion response or error message.
+    """
     if request.method == "GET":
         text_to_analyze = request.args.get("textToAnalyze", "")
     else:
@@ -32,6 +52,7 @@ def detect_emotion():
         )
 
     return response_text
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
